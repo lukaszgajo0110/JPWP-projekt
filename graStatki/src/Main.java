@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class Main implements Runnable{
     setShips setships = new setShips();
+    Game game = new Game();
 
 
     public static void main(String[] args) {
@@ -14,8 +15,14 @@ public class Main implements Runnable{
 
     @Override
     public void run() {
+        game.setVisible(false);
         while(true){
             setships.repaint();
+            game.repaint();
+            if(setships.isEndOfSetting()==-1){
+                setships.dispose();
+                game.setVisible(true);
+            }   /** Koniec ustawiania statków przez gracza*/
         }
     }
 }
