@@ -12,9 +12,6 @@ public class setShips extends JFrame {
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-<<<<<<< HEAD
         ///test
-=======
->>>>>>> origin/main
     }
 }
