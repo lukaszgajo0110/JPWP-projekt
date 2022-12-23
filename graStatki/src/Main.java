@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Main implements Runnable{
+
+
     setShips setships = new setShips();
     Game game = new Game();
 
@@ -18,11 +20,22 @@ public class Main implements Runnable{
         game.setVisible(false);
         while(true){
             setships.repaint();
+            game.genAIships();
             game.repaint();
             if(setships.isEndOfSetting()==-1){
+                game.getStatkiGracza(setships.tabGracza());
                 setships.dispose();
                 game.setVisible(true);
             }   /** Koniec ustawiania statków przez gracza*/
+            if(game.playerWin==1){
+                game.dispose();
+                break;
+            }   /** Koniec gry i wygrana gracza*/
+            if(game.aiWin==1){
+                game.dispose();
+                break;
+            }   /** Koniec gry i wygrana komputera*/
         }
     }
 }
+
