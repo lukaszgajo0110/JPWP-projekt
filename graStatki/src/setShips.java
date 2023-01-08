@@ -6,12 +6,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+/** Klasa w której gracz ustawia swoje statki*/
 public class setShips extends JFrame {
-    public int pos_x=-100; /** Zmienna x do zczytywania pozycji myszy*/
-    public int pos_y=-100; /** Zmienna y do zczytywania pozycji myszy*/
-    int AIshipsNum = 5; /** Liczba statków przeciwnika*/
-    private int[][] statkiGracza = new int[10][10]; /** Tablica do której zapisywane są statki gracza*/
+    /** Zmienna x do zczytywania pozycji myszy*/
+    public int pos_x=-100;
+    /** Zmienna y do zczytywania pozycji myszy*/
+    public int pos_y=-100;
+    /** Licznik statków pozostałych do postawienia*/
+    int AIshipsNum = 5;
+    /** Tablica do której zapisywane są statki gracza*/
+    private int[][] statkiGracza = new int[10][10];
 
+    /**Konstuktor - stworzenie okna i ustawienie mu parametrów. Stworzenie obiektów klas wewnętrznych*/
     public setShips()  {
         centerWindow();
         this.setTitle("Gra w statki");
@@ -31,7 +37,9 @@ public class setShips extends JFrame {
         this.addMouseListener(click);
 
     }
+    /** Klasa w której rysujemy siatke planszy i stawianie statków przez gracza*/
     public class Board extends JPanel{
+        /** Metoda rysująca kafelki planszy w pętli i jednocześnie metoda zmieniająca kolor kafelków na których gracz postawił statek*/
         public void paintComponent(Graphics g){
             g.setColor(Settings.tloPlanszy);
             g.fillRect(0,0,500,600);
@@ -53,19 +61,30 @@ public class setShips extends JFrame {
             g.drawString("statku, automatycznie przenosi do dalszej gry",4,575);
 
         }
-    }   /** Klasa w której rysujemy wszystko co sie dzieje*/
+    }
 
+    /** Klasa będąca implementacją MouseMotionListenera w celu obsługi ruchu myszki*/
     public class Move implements MouseMotionListener{
         @Override
         public void mouseDragged(MouseEvent e) {}
+        /** Metoda służąca do przypisania pozycji myszy do zmiennych*/
         @Override
         public void mouseMoved(MouseEvent e) {
             pos_x=e.getX();
             pos_y=e.getY();
         }
-    }   /** Iplementacja mouse motion listenera do zczytywania pozycji myszy na ekranie*/
+    }
 
+    /** Klasa będąca implementacją MouseListenera do obsługi kliknięć*/
     public class Click implements MouseListener{
+        /**
+         * Metoda która obsługuje kliknięcie LPM i PMP.
+         *
+         * Po kliknięciu sprawdzane są koordynaty myszy i są sprawdzane czy nie wykraczają poza zakres pola.
+         * Jeśli jest okej to statek jest ustawiony poprzez wpisanie jedynek do tablicy. Licznik AIshipNum jest zmniejszany.
+         * Działamy tak, aż licznik będzie 0 i wtedy kończymy ustawianie staków wyświetlając komunikat.
+         * Na koniec licznik zmieniamy na -1 co pozwala na sprawdzenie późniejszej funkcji czy już skończono ustawianie statków.
+         * */
         @Override
         public void mouseClicked(MouseEvent e) {
             if(e.getButton()==MouseEvent.BUTTON1){
@@ -118,7 +137,7 @@ public class setShips extends JFrame {
                     AIshipsNum=-1;
                 }
 
-            }   /** Ustawianie statku w pozycji poziomej LPM */
+            }
             if(e.getButton()==MouseEvent.BUTTON3){
                 if(getPosX()!=-1 && getPosY()!=-1 && AIshipsNum==5){
                     if(getPosY()>1 && getPosY()<8 && statkiGracza[getPosX()][getPosY()+2]==0 && statkiGracza[getPosX()][getPosY()+1]==0 && statkiGracza[getPosX()][getPosY()]==0 && statkiGracza[getPosX()][getPosY()-1]==0 && statkiGracza[getPosX()][getPosY()-2]==0){
@@ -168,7 +187,7 @@ public class setShips extends JFrame {
                     JOptionPane.showMessageDialog(setShips.this,"Ustawiłeś wszystkie swoje statki, kliknij OK aby przejść do gry");
                     AIshipsNum=-1;
                 }
-            }   /** Ustawianie statku w pozycji pionowej PPM*/
+            }
         }
 
         @Override
@@ -179,14 +198,16 @@ public class setShips extends JFrame {
         public void mouseEntered(MouseEvent e) {}
         @Override
         public void mouseExited(MouseEvent e) {}
-    }   /** Implementacja mouse listenera do obsługi kliknięc na ekranie*/
+    }
 
+    /** Metoda ustawiająca aplikacje na środek ekranu*/
     public void centerWindow(){
         Dimension dimension= Toolkit.getDefaultToolkit().getScreenSize();
         int dimX = (int) ((dimension.getWidth() - 500+Settings.sideBar)/2);
         int dimY = (int) ((dimension.getHeight() - 600+Settings.topBar)/2);
         this.setLocation(dimX, dimY);
-    }   /** Metoda ustawiająca aplikacje na środek ekranu*/
+    }
+    /** Metoda wracająca indeks poziomy klikniętego przycisku*/
     public int getPosX(){
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
@@ -196,7 +217,8 @@ public class setShips extends JFrame {
             }
         }
         return -1;
-    }   /** Metoda wracająca indeks poziomy klikniętego przycisku*/
+    }
+    /** Metoda zwracająca indeks pionowy klikniętego przycisku*/
     public int getPosY(){
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
@@ -206,12 +228,15 @@ public class setShips extends JFrame {
             }
         }
         return -1;
-    }   /** Metoda zwracająca indeks pionowy klikniętego przycisku*/
+    }
 
-    public int [][] tabGracza(){    /** Metoda zwarająca wypełnioną tabele ze statkami gracza*/
+
+    /** Metoda zwarająca wypełnioną tabele ze statkami gracza*/
+    public int [][] tabGracza(){
         return statkiGracza;
-    }   /** Metoda zwracająca wypełnioną tablice ze statkami gracza*/
+    }
+    /** Metoda zwracająca licznik do decyzji o zakończeniu tego etapu gry */
     public int isEndOfSetting(){
         return AIshipsNum;
-    }   /** Metoda służąca do decyzji o zakończeniu pobierania statków od gracza */
+    }
 }

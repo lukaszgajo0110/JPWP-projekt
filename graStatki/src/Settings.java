@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Settings extends JFrame {
-    static int topBar=28;   //28 - macOS, 29 - Windows
-    static int sideBar=0;   //0 - macOS, 16 - Windows
+    /** Ze względu na różny rozmiar okna na Windowsie i MacOS (pasek górny i boczne okna) należy odpowiednio ustawić poniższe zmienne*/
+    static int topBar=29;   //28 - macOS, 29 - Windows
+    static int sideBar=12;   //0 - macOS, 12 - Windows
 
     /** Kolory używane w projekcie*/
     static Color polePlanszy = new Color(182,182,180);

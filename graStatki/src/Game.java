@@ -11,23 +11,37 @@ import java.net.URL;
 import java.util.Random;
 import java.util.Set;
 
+/** Klasa do głównej części gry*/
 public class Game extends JFrame {
 
-    public int pos_x=-100; /** Zmienna x do zczytywania pozycji myszy*/
-    public int pos_y=-100; /** Zmienna y do zczytywania pozycji myszy*/
+    /** Zmienna x do zczytywania pozycji myszy*/
+    public int pos_x=-100;
+    /** Zmienna y do zczytywania pozycji myszy*/
+    public int pos_y=-100;
 
-    int AIshipsCounter = 5; /** Liczba statków przeciwnika*/
-    int[][] AIships = new int[10][10];  /** Tablica w której generujemy statki komputera*/
-    int[][] AIclicks = new int[10][10]; /** Tablica w której przechowywane są kliknięcia komputera*/
+    /** Liczba statków pozsotałych do postawienia przez przeciwnika*/
+    int AIshipsCounter = 5;
+    /** Tablica w której generujemy statki komputera*/
+    int[][] AIships = new int[10][10];
+    /** Tablica w której przechowywane są kliknięcia komputera*/
+    int[][] AIclicks = new int[10][10];
 
-    int[][] playerShips = new int[10][10];  /** Tablica w której przechowywane są statki gracza*/
-    int[][] playerClicks = new int[10][10]; /** Tablica w której przechowywane są kliknięcia gracza*/
+    /** Tablica w której przechowywane są statki gracza*/
+    int[][] playerShips = new int[10][10];
+    /** Tablica w której przechowywane są kliknięcia gracza*/
+    int[][] playerClicks = new int[10][10];
 
-    int sunkenPlayer=0; /** Zmienna pomocnicza do obserwowania ilości zatopionych segmentów statków przez gracza*/
-    int sunkenAI=0; /** Zmienna pomocnicza do obserwowania ilości zatopionych segmentów statków przez komputer*/
-    int playerWin=0;    /** Znacznik wygranej gracza*/
-    int aiWin=0;    /** Znacznik wygranej komputera*/
+    /** Zmienna pomocnicza do obserwowania ilości zatopionych segmentów statków przez gracza*/
+    int sunkenPlayer=0;
+    /** Zmienna pomocnicza do obserwowania ilości zatopionych segmentów statków przez komputer*/
+    int sunkenAI=0;
+    /** Znacznik wygranej gracza*/
+    int playerWin=0;
+    /** Znacznik wygranej komputera*/
+    int aiWin=0;
 
+
+    /**Konstuktor - stworzenie okna i ustawienie mu parametrów. Stworzenie obiektów klas wewnętrznych*/
     public Game() {
         centerWindow();
         this.setTitle("Gra w statki");
@@ -48,6 +62,10 @@ public class Game extends JFrame {
 
     }
 
+    /** Klasa w której rysujemy plansze i ruchy
+     *
+     * Kliknięcia gracza są sprawdzane w 6 ifach po to, żeby zastsować kolor pudła i 5 róznych kolorów trafu dla rozróżnienia statków.
+     * Sprawdzana jest tu też tablica ruchów komuptera i jego strzały są również rysowane*/
     public class Board extends JPanel {
         public void paintComponent(Graphics g) {
             g.setColor(Settings.tloPlanszy);
@@ -104,8 +122,9 @@ public class Game extends JFrame {
             g.drawString("(Tutaj 'klika' komputer)",761,580);
 
         }
-    }   /** Klasa w której rysujemy wszystko co sie dzieje*/
+    }
 
+    /** Klasa będąca implementacją MouseMotionListenera w celu obsługi ruchu myszki*/
     public class Move implements MouseMotionListener {
         @Override
         public void mouseDragged(MouseEvent e) {}
@@ -115,8 +134,15 @@ public class Game extends JFrame {
             pos_y=e.getY();
             //System.out.println("x - "+mx+" y - "+my);
         }
-    }   /** Iplementacja mouse motion listenera do zczytywania pozycji myszy na ekranie*/
+    }
 
+    /** Klasa będąca implementacjąMouseListenera która:
+     *
+     * Zczytuje pozycje klikniętego kafelka przez gracza i porównuje ją tabelą statków komputera.
+     * Jeśli jest traf to wywoływana jest funckja showShotInfo i licznik zatopień gracza się zwiększa.
+     *
+     * Zostaje tu wywołana metoda generująca kliknięcia komputera. Czyli zgodnie z naszym kliknięciem klika też komputer.
+     * Zostaje sprawdzony warunek końca gry i zwycięstwa gracza lub komputera*/
     public class Click implements MouseListener{
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -144,7 +170,7 @@ public class Game extends JFrame {
                 if(AIships[getPosX()][getPosY()]==0){
                     playerClicks[getPosX()][getPosY()]=-1;
                 }
-                AIclick();  /** Wywołanie metody generującej ruch komputera jednocześnie podczas kliknięcia gracza*/
+                AIclick();  //Wywołanie metody generującej ruch komputera jednocześnie podczas kliknięcia gracza
                 if(sunkenPlayer==15){
                     JOptionPane.showMessageDialog(Game.this,"Gratulacje, wygrałeś!");
                     playerWin=1;
@@ -163,14 +189,16 @@ public class Game extends JFrame {
         public void mouseEntered(MouseEvent e) {}
         @Override
         public void mouseExited(MouseEvent e) {}
-    }   /** Implementacja mouse listenera do obsługi kliknięc na ekranie*/
+    }
 
+    /** Metoda ustawiająca aplikacje na środek ekranu*/
     public void centerWindow(){
         Dimension dimension= Toolkit.getDefaultToolkit().getScreenSize();
         int dimX = (int) ((dimension.getWidth() - 1100)/2);
         int dimY = (int) ((dimension.getHeight() - 600 + Settings.topBar)/2);
         this.setLocation(dimX, dimY);
-    }   /** Metoda ustawiająca aplikacje na środek ekranu*/
+    }
+    /** Metoda wracająca indeks poziomy klikniętego przycisku*/
     public int getPosX(){
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
@@ -180,7 +208,8 @@ public class Game extends JFrame {
             }
         }
         return -1;
-    }   /** Metoda wracająca indeks poziomy klikniętego przycisku*/
+    }
+    /** Metoda zwracająca indeks pionowy klikniętego przycisku*/
     public int getPosY(){
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
@@ -190,8 +219,13 @@ public class Game extends JFrame {
             }
         }
         return -1;
-    }   /** Metoda zwracająca indeks pionowy klikniętego przycisku*/
+    }
 
+    /** Metoda generująca dla tablicy komputera statki
+     *
+     * Losowana jest orientacja statku pionowa lub pozioma i nastepnie sprawdzane są dostępne miejsca dla statków tj. czy nie wykracza poza plansze i czy nie zachodzi na inne statki
+     * Zmienna określająca ile statków jeszcze musi zostać postawionych zostaje pomniejszona
+     * Pętla generowania tych statków działa dopóki licznik nie osiągnie 0*/
     public void genAIships(){
         Random rand = new Random();
         double dx, dy;
@@ -264,7 +298,14 @@ public class Game extends JFrame {
                 AIshipsCounter = 0;
             }
         }while(AIshipsCounter!=0);
-    }   /** Metoda generująca dla tablicy komputera statki*/
+    }
+
+    /** Metoda generująca ruchy komputera
+     *
+     * Ruchy generowane są losowo.
+     * Losowane są dwie liczby i sprawdzane jakiś statek jest pod tym indeksem
+     * Jeśli jest to ustawiamy pole tablicy kliknięc komputera na 1 i zwiększamy licznik zatopionych statków.
+     */
     public void AIclick(){
         int licznik=0;
         do{
@@ -306,11 +347,13 @@ public class Game extends JFrame {
                 licznik=1;
             }
         }while(licznik==0);
-    }   /** Metoda generująca ruchy komputera*/
+    }
+    /** Metoda pobierająca tablice ze statkami ustawionymi przez gracza*/
     void getStatkiGracza(int [][]tab){
         playerShips=tab;
-    }/** Metoda pobierająca tablice ze statkami ustawionymi przez gracza*/
+    }
+    /** Metoda wyświetlająca informacje o trafieniu statku przeciwnika*/
     void showShotInfo(){
         JOptionPane.showMessageDialog(Game.this,"Trafiłeś statek przeciwnika");
-    }   /** Metoda wyświetlająca informacje o trafieniu statku przeciwnika*/
+    }
 }
