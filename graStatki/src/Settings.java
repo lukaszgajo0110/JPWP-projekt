@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
-
+/** klasa kolorów, ustawień i stałych zmiennych używanych w projekcie*/
 public class Settings extends JFrame {
-    /** Ze względu na różny rozmiar okna na Windowsie i MacOS (pasek górny i boczne okna) należy odpowiednio ustawić poniższe zmienne*/
+    //Ze względu na różny rozmiar okna na Windowsie i MacOS (pasek górny i boczne okna) należy odpowiednio ustawić poniższe zmienne
+    /**pole określające w pixelach wysokość paska górnego okna*/
     static int topBar=29;   //28 - macOS, 29 - Windows
+    /**pole określające w pixelach szerokość pasków bocznych okna*/
     static int sideBar=12;   //0 - macOS, 12 - Windows
 
     /** Kolory używane w projekcie*/
@@ -17,7 +19,7 @@ public class Settings extends JFrame {
     static Color kolorTrafu4 = new Color(109,144,100);
     static Color kolorTrafu5 = new Color(79,114,110);
 
-
-    static int border=3; /** Liczba px pomiędzy komórkami siatki*/
+    /** Liczba px pomiędzy komórkami siatki*/
+    static int border=3;
 
 }
